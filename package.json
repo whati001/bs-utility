@@ -11,6 +11,13 @@
     "watch": "node ../../build/module-builder/bin/entry watch",
     "package": "node ../../build/module-builder/bin/entry package"
   },
+  "webpack": {
+    "externals": {
+      "reactstrap": "Reactstrap",
+      "react-select": "ReactSelect",
+      "botpress/tooltip": "BotpressTooltip"
+    }
+  },
   "dependencies": {},
   "devDependencies": {
     "module-builder": "../../build/module-builder"
