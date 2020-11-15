@@ -22,7 +22,7 @@ const entryPoint: sdk.ModuleEntryPoint = {
   skills: skillsToRegister,
   translations: { en },
   definition: {
-    name: 'Extended Skills',
+    name: 'bs-utility',
     noInterface: true,
     menuIcon: 'none',
     menuText: 'Provided some custom skills by whati001',
