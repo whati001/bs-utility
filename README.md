@@ -52,19 +52,20 @@ $ npm install -g yarn
 
 ## Build the module
 
-#### Clone botpress
-Because this is only a [custom module](https://botpress.com/docs/advanced/custom-module), we first need to clone the botpress repository. We need the original repo for building the module.
+This is only a extention module to the botpress project. Hence, we need clone first he botpress project and inject this module into the existing botpress source.
 
-```
+### Clone botpress
+Because this is only a custom module, we first need to clone the botpress repository. We need the original repo for building the module.
+
+```bash
 $ git clone https://github.com/botpress/botpress.git
 $ cd botpress
 ```
 
-#### Clone bs-utility module
+### Clone bs-utility module
+To build the custom module, please clone the repository into the ./modules/ directory from your existing botpress repo.
 
-To build the custom module, please clone the repository into the `./modules/` directory from your existing botpress repo.
-
-After cloning and run `install` all the mandatory files for buidling are loaded.
+After cloning and run install all the mandatory files for buidling are loaded.
 
 ```bash
 $ cd botpress/modules/
@@ -73,8 +74,59 @@ $ cd bs-utility
 $ yarn install
 ```
 
-#### Build the module
+### Build botpress
+Now we are ready to build the entire botpress project which includes your custom module.
+
 ```bash
-$ cd botpress/modules/bs-utility/
+$ cd botpress/
 $ yarn build
+# fix missing rentencepiece.node
+
+```
+
+### Watch the module
+Because rebuilding the entire project would take to much time, we can just rebuild your module and reload botpress ui to test out your new changes. For this, please build ones the entire project like shown in Build the module. After building ones, we can link the modules into the build output by executing following commands. We recommend to use tmux for multi window support.
+
+```bash
+# link modules into botpress build output
+$ cd botpress/
+$ yarn cmd dev:modules
+
+# window 1
+# start botpress
+$ yarn start
+
+# window 2
+# start watching your module for changes
+$ cd botpress/modules/bs-utility/
+$ yarn watch
+```
+
+### Package the module
+
+To generate a archive package just run:
+```bash
+$yarn package
+```
+
+---
+## Dockerfile
+If you prefer, you can also use the crapy `Dockerfile` inside the `docker/` directory. This will create a new container with botpress and bs-utility cloned and build ones. To enable rappildy development, please just mount your local bs-utility instance into the container and execute following commands inside.
+
+
+```bash
+# build docker container
+$ docker build -t bp:custom - < docker/Dockerfile
+# run docker container
+$ docker run --rm -it -v /local/path/bs-utility:/botpress/modules/bs-utility bp:custom
+
+# window 1
+# start botpress
+$ cd botpress/
+$ yarn start
+
+# window 2
+# start watching your module for changes
+$ cd botpress/modules/bs-utility/
+$ yarn watch
 ```
