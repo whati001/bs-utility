@@ -2,22 +2,18 @@ import * as sdk from 'botpress/sdk'
 
 import en from '../translations/en.json'
 
-import fillStorage from './fillStorage'
+import requestEntity from './requestEntity'
 
-const onServerStarted = async (bp: typeof sdk) => {
-  console.log('Custom Module bp-utilities by whati001 loaded on Server startup.')
-}
-const onServerReady = async (bp: typeof sdk) => {
-  console.log('Custom Module bp-utilities by whati001 loaded on Server ready.')
-}
+const onServerStarted = async (bp: typeof sdk) => { }
+const onServerReady = async (bp: typeof sdk) => { }
 
 
 const skillsToRegister: sdk.Skill[] = [
   {
-    id: 'fillStorage',
-    name: 'module.bs-utility.fillStorage',
+    id: 'requestEntity',
+    name: 'module.bs-utility.requestEntity',
     icon: 'comparison',
-    flowGenerator: fillStorage.generateFlow
+    flowGenerator: requestEntity.generateFlow
   }
 ]
 

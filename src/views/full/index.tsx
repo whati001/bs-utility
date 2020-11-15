@@ -1,1 +1,1 @@
-export { FillStorage as fillStorage } from './fillStorage'
+export { RequestEntity as requestEntity } from './requestEntity'

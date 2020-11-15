@@ -12,36 +12,52 @@ import { StorageOption, STORAGES } from './../../lib/storage'
 import { parseVarName, parseText, parseNumber } from './../../lib/input'
 import { SkillProps } from './../../lib/typing'
 
-interface FillStorageState {
+type EntityOption = StorageOption
+
+interface RequestEntityConfig {
   storage: StorageOption
   varName: string
   maxRetry: number
   qText: string
   qOnFailure: string
-  validator: string
+  entity: EntityOption
   error: string
 }
 
-type FillStorageProps = SkillProps<FillStorageState>
 
-export class FillStorage extends React.Component<FillStorageProps, FillStorageState> {
-  state: FillStorageState = {
+type RequestEntityProps = SkillProps<RequestEntityConfig>
+type State = RequestEntityConfig & { entities: EntityOption[] };
+
+export class RequestEntity extends React.Component<RequestEntityProps, State> {
+
+  state: State = {
     storage: undefined,
     varName: '',
     maxRetry: 3,
     qText: '',
     qOnFailure: '',
-    validator: '',
+    entity: undefined,
+    entities: [],
     error: undefined
   }
 
-  componentDidMount = (): void => {
+  componentDidMount = async () => {
     if (this.props.initialData) {
       this.setStateFromProps(this.props.initialData)
     }
+    this.fetchEntities()
   }
 
-  setStateFromProps = (initProps: FillStorageState): void => {
+  fetchEntities = async () => {
+    // this.props.bp.axios.get('/mod/nlu/entities').then(ents => console.log(ents))
+    this.setState({
+      'entities': [
+        { value: 'email', label: 'E-mail' }
+      ]
+    })
+  }
+
+  setStateFromProps = (initProps: RequestEntityConfig): void => {
     const getPropOrDefault = (key: string): any => initProps[key] ? initProps[key] : this.state[key]
 
     this.setState({
@@ -50,7 +66,8 @@ export class FillStorage extends React.Component<FillStorageProps, FillStorageSt
       maxRetry: getPropOrDefault('maxRetry'),
       qText: getPropOrDefault('qText'),
       qOnFailure: getPropOrDefault('qOnFailure'),
-      validator: getPropOrDefault('validator'),
+      entity: getPropOrDefault('entity'),
+      entities: getPropOrDefault('entities'),
       error: getPropOrDefault('error')
     })
   }
@@ -61,10 +78,10 @@ export class FillStorage extends React.Component<FillStorageProps, FillStorageSt
       && this.state.maxRetry
       && (this.state.qText != '')
       && (this.state.qOnFailure != '')
-      && (this.state.validator != '')
+      && (this.state.entity != undefined)
   }
 
-  componentDidUpdate = (prevProps: FillStorageProps, prevState: FillStorageState): void => {
+  componentDidUpdate = (prevProps: RequestEntityProps, prevState: State): void => {
     if (this.state != prevState) {
       this.updateParent(this.hasValidForm())
     }
@@ -103,8 +120,8 @@ export class FillStorage extends React.Component<FillStorageProps, FillStorageSt
     this.setState({ qOnFailure: parseText(input.target.value) })
   }
 
-  handleValidatorChange = (input: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ validator: parseText(input.target.value) })
+  handleEntityChange = (selection: EntityOption): void => {
+    this.setState({ entity: selection })
   }
 
   render() {
@@ -175,14 +192,15 @@ export class FillStorage extends React.Component<FillStorageProps, FillStorageSt
         </Row>
         <Row className={style.skillInput}>
           <Col md={12}>
-            <BotpressTooltip message="Please enter validator to verify user input" />
-            <Label for="validator">Define validator action to verify users input</Label>
-            <Input
-              id="validator"
-              name="validator"
-              placeholder="Define some quesition on failure text"
-              onChange={this.handleValidatorChange}
-              value={this.state.validator}
+            <BotpressTooltip message="Please select an entity type to use" />
+            <Label for="entity">Select entity type to use</Label>
+            <Select
+              id="entity"
+              name="entity"
+              placeholder="Select entity to use"
+              onChange={this.handleEntityChange}
+              value={this.state.entity}
+              options={this.state.entities}
             />
           </Col>
         </Row>
