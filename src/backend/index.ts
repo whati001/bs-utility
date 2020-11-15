@@ -7,7 +7,6 @@ import requestEntity from './requestEntity'
 const onServerStarted = async (bp: typeof sdk) => { }
 const onServerReady = async (bp: typeof sdk) => { }
 
-
 const skillsToRegister: sdk.Skill[] = [
   {
     id: 'requestEntity',
@@ -23,10 +22,10 @@ const entryPoint: sdk.ModuleEntryPoint = {
   skills: skillsToRegister,
   translations: { en },
   definition: {
-    name: 'bs-utility',
+    name: 'Extended Skills',
+    noInterface: true,
     menuIcon: 'none',
-    menuText: 'Utility by whati001',
-    noInterface: false,
+    menuText: 'Provided some custom skills by whati001',
     fullName: 'Botpress Utility by whati001',
     homepage: 'https://github.com/whati001'
   }
