@@ -847,6 +847,8 @@ var react_1 = __importDefault(__webpack_require__(/*! react */ "react"));
 // @ts-ignore
 var react_select_1 = __importDefault(__webpack_require__(/*! react-select */ "react-select"));
 // @ts-ignore
+var content_picker_1 = __importDefault(__webpack_require__(/*! botpress/content-picker */ "botpress/content-picker"));
+// @ts-ignore
 var reactstrap_1 = __webpack_require__(/*! reactstrap */ "reactstrap");
 // @ts-ignore
 var tooltip_1 = __webpack_require__(/*! botpress/tooltip */ "botpress/tooltip");
@@ -935,11 +937,11 @@ var RequestEntity = /** @class */ (function (_super) {
         _this.handleRetryCount = function (input) {
             _this.setState({ maxRetry: input_1.parseNumber(input.target.value) });
         };
-        _this.handleQuestionChange = function (input) {
-            _this.setState({ qText: input_1.parseText(input.target.value) });
+        _this.handleQuestionChange = function (item) {
+            _this.setState({ qText: item.id });
         };
-        _this.handleQuestionOnFailureChange = function (input) {
-            _this.setState({ qOnFailure: input_1.parseText(input.target.value) });
+        _this.handleQuestionOnFailureChange = function (item) {
+            _this.setState({ qOnFailure: item.id });
         };
         _this.handleEntityChange = function (selection) {
             _this.setState({ entity: selection });
@@ -966,12 +968,12 @@ var RequestEntity = /** @class */ (function (_super) {
                 react_1.default.createElement(reactstrap_1.Col, { md: 12 },
                     react_1.default.createElement(tooltip_1.BotpressTooltip, { message: "Please enter quesiton to ask" }),
                     react_1.default.createElement(reactstrap_1.Label, { for: "qText" }, "Define question to ask the user"),
-                    react_1.default.createElement(reactstrap_1.Input, { id: "qText", name: "qText", placeholder: "Define some quesition text", onChange: this.handleQuestionChange, value: this.state.qText }))),
+                    react_1.default.createElement(content_picker_1.default, { id: "qText", name: "qText", itemId: this.state.qText, placeholder: "Define some quesition text", onChange: this.handleQuestionChange }))),
             react_1.default.createElement(reactstrap_1.Row, { className: style_scss_1.default.skillInput },
                 react_1.default.createElement(reactstrap_1.Col, { md: 12 },
                     react_1.default.createElement(tooltip_1.BotpressTooltip, { message: "Please enter quesiton on failure to ask" }),
                     react_1.default.createElement(reactstrap_1.Label, { for: "qText" }, "Define question on failure to ask the user"),
-                    react_1.default.createElement(reactstrap_1.Input, { id: "qOnFailure", name: "qOnFailure", placeholder: "Define some quesition on failure text", onChange: this.handleQuestionOnFailureChange, value: this.state.qOnFailure }))),
+                    react_1.default.createElement(content_picker_1.default, { id: "qOnFailure", name: "qOnFailure", placeholder: "Define some quesition on failure text", itemId: this.state.qOnFailure, onChange: this.handleQuestionOnFailureChange }))),
             react_1.default.createElement(reactstrap_1.Row, { className: style_scss_1.default.skillInput },
                 react_1.default.createElement(reactstrap_1.Col, { md: 12 },
                     react_1.default.createElement(tooltip_1.BotpressTooltip, { message: "Please select an entity type to use" }),
@@ -1024,6 +1026,17 @@ if(false) {}
 
 module.exports = __webpack_require__(/*! ./src/views/full/index.tsx */"./src/views/full/index.tsx");
 
+
+/***/ }),
+
+/***/ "botpress/content-picker":
+/*!****************************************!*\
+  !*** external "BotpressContentPicker" ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = BotpressContentPicker;
 
 /***/ }),
 

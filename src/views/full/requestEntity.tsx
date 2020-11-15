@@ -2,12 +2,15 @@ import React from 'react'
 // @ts-ignore
 import Select from 'react-select'
 // @ts-ignore
+import ContentPickerWidget from 'botpress/content-picker'
+// @ts-ignore
 import { Container, Row, Col, Alert, Label, Input } from 'reactstrap'
 // @ts-ignore
 import { BotpressTooltip } from 'botpress/tooltip'
 // @ts-ignore
 import style from './style.scss'
 
+import { ContentElement } from 'botpress/sdk'
 import { StorageOption, STORAGES } from './../../lib/storage'
 import { parseVarName, parseText, parseNumber } from './../../lib/input'
 import { SkillProps } from './../../lib/typing'
@@ -112,12 +115,12 @@ export class RequestEntity extends React.Component<RequestEntityProps, State> {
     this.setState({ maxRetry: parseNumber(input.target.value) })
   }
 
-  handleQuestionChange = (input: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ qText: parseText(input.target.value) })
+  handleQuestionChange = (item: ContentElement): void => {
+    this.setState({ qText: item.id })
   }
 
-  handleQuestionOnFailureChange = (input: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ qOnFailure: parseText(input.target.value) })
+  handleQuestionOnFailureChange = (item: ContentElement): void => {
+    this.setState({ qOnFailure: item.id })
   }
 
   handleEntityChange = (selection: EntityOption): void => {
@@ -168,12 +171,12 @@ export class RequestEntity extends React.Component<RequestEntityProps, State> {
           <Col md={12}>
             <BotpressTooltip message="Please enter quesiton to ask" />
             <Label for="qText">Define question to ask the user</Label>
-            <Input
+            <ContentPickerWidget
               id="qText"
               name="qText"
+              itemId={this.state.qText}
               placeholder="Define some quesition text"
               onChange={this.handleQuestionChange}
-              value={this.state.qText}
             />
           </Col>
         </Row>
@@ -181,12 +184,12 @@ export class RequestEntity extends React.Component<RequestEntityProps, State> {
           <Col md={12}>
             <BotpressTooltip message="Please enter quesiton on failure to ask" />
             <Label for="qText">Define question on failure to ask the user</Label>
-            <Input
+            <ContentPickerWidget
               id="qOnFailure"
               name="qOnFailure"
               placeholder="Define some quesition on failure text"
+              itemId={this.state.qOnFailure}
               onChange={this.handleQuestionOnFailureChange}
-              value={this.state.qOnFailure}
             />
           </Col>
         </Row>

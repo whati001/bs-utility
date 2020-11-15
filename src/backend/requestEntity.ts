@@ -23,53 +23,24 @@ const createTransitions = (): sdk.NodeTransition[] => {
 }
 
 const createNodes = data => {
+  console.log(data)
   const nodes: sdk.SkillFlowNode[] = [
     {
       name: 'entry',
-      onEnter: undefined,
-      onReceive: undefined,
-      next: [
-        { condition: `${data.storage}.${data.varName} !== undefined`, node: 'setAlreadyStored' },
-        { condition: 'true', node: 'sendQText' }
-      ]
-    },
-    {
-      name: 'sendQText',
-      onEnter: [
-        {
-          type: sdk.NodeActionType.RenderElement,
-          name: `#!${data.qText}`
-        }
-      ],
-      onReceive: undefined,
-      next: [
-        { condition: 'true', node: 'sendQText' }
-      ]
-    },
-    {
-      name: 'setStored',
-      onEnter: [
-        {
-          type: sdk.NodeActionType.RunAction,
-          name: 'builtin/setVariable {"type":"temp","name":"stored","value":"true"}'
-        }
-      ],
-      onReceive: undefined,
-      next: [
-        { condition: 'true', node: '#' }
-      ]
-    },
-    {
-      name: 'setNotStored',
       onEnter: [
         {
           type: sdk.NodeActionType.RunAction,
           name: 'builtin/setVariable {"type":"temp","name":"stored","value":"false"}'
+        },
+        {
+          type: sdk.NodeActionType.RunAction,
+          name: 'builtin/setVariable {"type":"temp","name":"alreadyStored","value":"false"}'
         }
       ],
       onReceive: undefined,
       next: [
-        { condition: 'true', node: '#' }
+        { condition: `${data.storage.value}.${data.varName} !== undefined`, node: 'setAlreadyStored' },
+        { condition: 'true', node: 'sendQText' }
       ]
     },
     {
@@ -82,7 +53,47 @@ const createNodes = data => {
       ],
       onReceive: undefined,
       next: [
-        { condition: 'true', node: 'setNotStored' }
+        { condition: 'true', node: '#' }
+      ]
+    },
+    {
+      name: 'sendQText',
+      onEnter: [
+        {
+          type: sdk.NodeActionType.RenderElement,
+          name: `#!${data.qText}`
+        }
+      ],
+      onReceive: undefined,
+      next: [
+        { condition: 'true', node: 'parseResponse' }
+      ]
+    },
+    {
+      name: 'parseResponse',
+      onEnter: undefined,
+      onReceive: [
+        {
+          type: sdk.NodeActionType.RunAction,
+          name: `bs-utility/requestEntity {"storageType":"${data.storage.value}","varName":"${data.varName}","entity":"${data.entity}"}`
+        }
+      ],
+      next: [
+        { condition: 'temp.stored == "true"', node: '#' },
+        { condition: 'true', node: 'sendQFText' },
+      ]
+    },
+    {
+      name: 'sendQFText',
+      onEnter: [
+        {
+          type: sdk.NodeActionType.RenderElement,
+          name: `#!${data.qOnFailure}`
+        }
+      ],
+      onReceive: undefined,
+      next: [
+        { condition: 'true', node: 'parseResponse' },
       ]
     }
   ]
