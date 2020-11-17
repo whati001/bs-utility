@@ -1,4 +1,3 @@
-import { number } from "joi"
 
 export const parseVarName = (input: string, maxLength: number = 20): string => {
   if (input) {

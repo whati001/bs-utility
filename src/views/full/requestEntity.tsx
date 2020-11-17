@@ -11,11 +11,9 @@ import { BotpressTooltip } from 'botpress/tooltip'
 import style from './style.scss'
 
 import { ContentElement } from 'botpress/sdk'
-import { StorageOption, STORAGES } from './../../lib/storage'
-import { parseVarName, parseText, parseNumber } from './../../lib/input'
-import { SkillProps } from './../../lib/typing'
-
-type EntityOption = StorageOption
+import { STORAGES } from './../../lib/storage'
+import { parseVarName, parseNumber } from './../../lib/input'
+import { StorageOption, EntityOption, SkillProps } from './../../lib/typing'
 
 interface RequestEntityConfig {
   storage: StorageOption

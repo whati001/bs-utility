@@ -1,10 +1,4 @@
-/**
- * Define supported storage types
- */
-interface StorageOption {
-  value: string,
-  label: string
-}
+import { StorageOption } from './typing'
 
 const STORAGES: StorageOption[] = [
   { 'value': 'session', 'label': 'Session' },
@@ -12,4 +6,4 @@ const STORAGES: StorageOption[] = [
   { 'value': 'user', 'label': 'User' }
 ]
 
-export { StorageOption, STORAGES }
+export { STORAGES }

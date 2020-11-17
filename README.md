@@ -2,6 +2,10 @@
 
 Includes some utilities to support you creating innovative chatbots also with community edition.
 
+## Custom request
+
+If you would need a custom skill, please let me know via [mail](andreas.karner@student.tugraz.at).
+
 ---
 ## Requirements
 

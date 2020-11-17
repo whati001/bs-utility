@@ -1,3 +1,7 @@
+
+/**
+ * Skill component Parent Properties
+ */
 export interface SkillProps<T> {
   bp: any
   initialData: T
@@ -8,3 +12,11 @@ export interface SkillProps<T> {
   defaultLanguage: string
   languages: string[]
 }
+
+/**
+ * Select element options for various types
+ */
+export interface StorageOption { value: string, label: string }
+export type EntityOption = StorageOption
+export type IntentOption = StorageOption
+export type ActionOption = StorageOption
