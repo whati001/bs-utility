@@ -50,12 +50,15 @@ export class RequestEntity extends React.Component<RequestEntityProps, State> {
   }
 
   fetchEntities = async () => {
-    // this.props.bp.axios.get('/mod/nlu/entities').then(ents => console.log(ents))
-    this.setState({
-      'entities': [
-        { value: 'email', label: 'E-mail' }
-      ]
-    })
+    this.props.bp.axios.get('/nlu/entities')
+      .then(res => {
+        const data = res.data.map(ent => {
+          return { value: ent.name, label: ent.label }
+        })
+        this.setState({
+          'entities': data
+        })
+      });
   }
 
   setStateFromProps = (initProps: RequestEntityConfig): void => {

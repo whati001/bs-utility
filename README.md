@@ -122,7 +122,7 @@ If you prefer, you can also use the crapy `Dockerfile` inside the `docker/` dire
 # build docker container
 $ docker build -t bp:custom - < docker/Dockerfile
 # run docker container
-$ docker run --rm -it -v /local/path/bs-utility:/botpress/modules/bs-utility bp:custom
+$ docker run --rm -it -p 3000:3000 -p 3001:3001 -v /local/path/bs-utility:/botpress/modules/bs-utility bp:custom
 
 # window 1
 # start botpress
