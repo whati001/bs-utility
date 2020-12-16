@@ -1,0 +1,51 @@
+version: "3"
+services:
+  duckling:
+    image: botpress/server:v12_15_1
+    expose:
+      - "8000"
+    volumes:
+      - botpress_data:/botpress/data
+    command: '/bin/bash -c "./duckling"'
+
+  nameserver:
+    image: botpress/server:v12_15_1
+    depends_on:
+      - duckling
+    expose:
+      - "3100"
+    volumes:
+      - botpress_data:/botpress/data
+    environment:
+      BP_MODULE_NLU_DUCKLINGURL: "http://duckling:8000"
+    command: '/bin/bash -c "./bp lang --langDir /botpress/data/embeddings"'
+
+  botpress:
+    image: botpress/server:v12_15_1
+    depends_on:
+      - duckling
+      - nameserver
+    expose:
+      - "3000"
+    volumes:
+      - botpress_data:/botpress/data
+    environment:
+      BP_MODULE_NLU_DUCKLINGURL: "http://duckling:8000"
+      BP_MODULE_NLU_LANGUAGESOURCES: '[{ "endpoint": "http://nameserver:3100" }]'
+    command: '/bin/bash -c "./bp"'
+
+  revproxy:
+    image: nginx:latest
+    depends_on:
+      - botpress
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /home/akarner/rehka/bbme/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /home/akarner/rehka/bbme/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /home/akarner/rehka/bbme/nginx/bp.key:/etc/nginx/cert/bp.key
+      - /home/akarner/rehka/bbme/nginx/bp.crt:/etc/nginx/cert/bp.crt
+
+volumes:
+  botpress_data:
